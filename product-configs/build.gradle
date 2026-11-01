@@ -1,0 +1,5 @@
+plugins {
+    id 'base'
+}
+
+description = 'Shared configuration files for the microservices'
