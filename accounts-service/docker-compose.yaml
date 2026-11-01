@@ -1,0 +1,40 @@
+services:
+  accounts-service:
+    image: hridmitrov/accounts-service:s4
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 1024m
+    networks:
+      - "banking-network"
+
+  loans-service:
+    image: hridmitrov/loans-service:s4
+    container_name: loans-ms
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 1024m
+    networks:
+      - "banking-network"
+
+  cards-service:
+    image: hridmitrov/cards-service:s4
+    container_name: cards-ms
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 1024m
+    networks:
+      - "banking-network"
+
+networks:
+  banking-network:
+    driver: bridge

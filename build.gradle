@@ -1,0 +1,18 @@
+plugins {
+    id 'base'
+}
+
+description = 'Microservices learning workspace'
+
+// Each service keeps its own dependencies, toolchain, and executable application.
+tasks.named('build') {
+    dependsOn subprojects.collect { "${it.path}:build" }
+}
+
+tasks.named('check') {
+    dependsOn subprojects.collect { "${it.path}:check" }
+}
+
+tasks.named('clean') {
+    dependsOn subprojects.collect { "${it.path}:clean" }
+}
