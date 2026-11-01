@@ -31,69 +31,6 @@ services:
     networks:
       - "banking-network"
 
-  accounts-db:
-    image: mysql
-    container_name: accounts-db
-    ports:
-      - "3306:3306"
-    deploy:
-      resources:
-        limits:
-          memory: 1024m
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 10s
-      retries: 10
-      interval: 10s
-      start_period: 10s
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: accountsdb
-    networks:
-      - "banking-network"
-
-  loans-db:
-    image: mysql
-    container_name: loans-db
-    ports:
-      - "3307:3306"
-    deploy:
-      resources:
-        limits:
-          memory: 1024m
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 10s
-      retries: 10
-      interval: 10s
-      start_period: 10s
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: loansdb
-    networks:
-      - "banking-network"
-
-  cards-db:
-    image: mysql
-    container_name: cards-db
-    ports:
-      - "3308:3306"
-    deploy:
-      resources:
-        limits:
-          memory: 1024m
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 10s
-      retries: 10
-      interval: 10s
-      start_period: 10s
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: cardsdb
-    networks:
-      - "banking-network"
-
   accounts-service:
     image: hridmitrov/accounts-service:s9
     container_name: accounts-ms
@@ -110,16 +47,11 @@ services:
       SPRING_PROFILES_ACTIVE: prod
       CONFIG_SERVER_URL: http://config-server:8071
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      SPRING_DATASOURCE_URL: "jdbc:mysql://accounts-db:3306/accountsdb"
     depends_on:
       config-server:
         condition: service_started
       eureka-server:
         condition: service_started
-      accounts-db:
-        condition: service_healthy
 
   loans-service:
     image: hridmitrov/loans-service:s9
@@ -137,16 +69,11 @@ services:
       SPRING_PROFILES_ACTIVE: prod
       CONFIG_SERVER_URL: http://config-server:8071
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      SPRING_DATASOURCE_URL: "jdbc:mysql://loans-db:3306/loansdb"
     depends_on:
       config-server:
         condition: service_started
       eureka-server:
         condition: service_started
-      loans-db:
-        condition: service_healthy
 
   cards-service:
     image: hridmitrov/cards-service:s9
@@ -164,16 +91,29 @@ services:
       SPRING_PROFILES_ACTIVE: prod
       CONFIG_SERVER_URL: http://config-server:8071
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      SPRING_DATASOURCE_URL: "jdbc:mysql://cards-db:3306/cardsdb"
     depends_on:
       config-server:
         condition: service_started
       eureka-server:
         condition: service_started
-      cards-db:
-        condition: service_healthy
+
+  redis:
+    image: redis:7.4.2-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - "banking-network"
 
   gateway-server:
     image: hridmitrov/gateway-server:s9
@@ -190,6 +130,8 @@ services:
     environment:
       CONFIG_SERVER_URL: http://config-server:8071
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
     depends_on:
       config-server:
         condition: service_started
