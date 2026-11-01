@@ -1,0 +1,287 @@
+{
+  "source_repository_owner": "dimihris",
+  "original_remote_branches": {
+    "accounts-service": {
+      "circuit-breaker": "cea15bfe1463430a036b041b039aabf2f7353bc6",
+      "gateway-server": "ab7d67da1ce848dfbdd7f4a204238b78d2a00b6c",
+      "main": "3c20ba8562a3b2bd2b97c9ce454d79820f4ca2fa",
+      "mysql-database": "c1a2dcc0c47374697aa1ac71533f081613c50415",
+      "observability-and-monitoring": "59bca19bc60e3f60716f26cdc0ce8b8a4c49af8a",
+      "security": "963c673997b15f0701a5c9764b1f8ba4a074135b",
+      "service-discovery-and-registration": "1aa800862b637e55c2925c22d08466de5575004f",
+      "spring-cloud-config": "2c53ec5c806c77e32506d3fdec316c25210dbca6"
+    },
+    "cards-service": {
+      "circuit-breaker": "39915ba294a9e98f7bc1a60cf152a2c33059d76b",
+      "gateway-server": "39915ba294a9e98f7bc1a60cf152a2c33059d76b",
+      "main": "8ba7ba22f6cc9ea0f121a299075503be07b75714",
+      "mysql-database": "bf0192a2253777332fe57ca21219c5f1c24bf00b",
+      "observability-and-monitoring": "14b65a23e5c0140ef6575e4015ce30b9bc4fff1e",
+      "security": "ed881b12700074e4f786c5be83cc9ace96b4df92",
+      "service-discovery-and-registration": "98c528adfa8be24e172178794d642caf17391e47",
+      "spring-cloud-config": "82be26011424569f8271c001bda11343720851fc"
+    },
+    "loans-service": {
+      "circuit-breaker": "02002c7af90f2b4f7412b6754968dbc32f306b00",
+      "gateway-server": "f31418b4cdbc62a44c87f2ddbeb30e73afddcd2e",
+      "main": "d4c84ebf8aa49a3d26f2cf5319f2cc3475cc238f",
+      "mysql-database": "03d3a3f9bf8be4394addbf78c3797dff45705b0c",
+      "observability-and-monitoring": "0470d841f7171e6a97899d0e01f1f8f6d3fb1672",
+      "security": "47637e73ff3b1f949f262a6afeb310742ee480ff",
+      "service-discovery-and-registration": "ee61d9203031b6803fbbb249b95039e8d2b449ed",
+      "spring-cloud-config": "01756d89b4b3534ab064cbdb63e9700242cd2167"
+    },
+    "config-server": {
+      "circuit-breaker": "3b261077bcd34e2fd60735ce616ca6de6f747688",
+      "main": "b605ffe00de0e2b50ca94fad78050bab2b9e4148",
+      "mysql-database": "5fbf7def95a504c723dbeb4defba6e0fd10632a1",
+      "observability-and-monitoring": "94b74fee2cbdc6e64c4fa033d95b88a35760429e",
+      "security": "11d6dd099e9f6bf2fd8407e387f04032b9960851",
+      "service-discovery-and-registration": "12eca5d2f76f2216c60832f8bb33f92fb83c56e9",
+      "spring-cloud-config": "e33b53906a91ee858ddbeb0c8b0e7c8ee319470e"
+    },
+    "eureka-server": {
+      "circuit-breaker": "157515a22adf330cce6c600a2b00d354fc148fbe",
+      "main": "126ab412f3ad4094fa7da10c9bd5df801460a1b1",
+      "observability-and-monitoring": "5fab70d1131b2133ee8819f83fadf5b1516f4eb0",
+      "security": "8b9351518fd14798aefa83c628f520f1fb279f3d",
+      "service-discovery-and-registration": "19ad36522c7610a3728f1b54a8761795f75c309b"
+    },
+    "gateway-server": {
+      "circuit-breaker": "ca7425e27ce6d1a862568e3d9f7daddf2262f6f2",
+      "main": "813b9b256bcf17520b61fb50e5d69ac95f0d89a7",
+      "observability-and-monitoring": "d80cde965460cb22244a5e159e7edd914be9be86",
+      "security": "cd70c4cec0c7184207903203790bcafb58f9632c"
+    },
+    "message": {
+      "main": "9999c013ef4e4772f3ad6ea1d299b8b18adf85cb"
+    },
+    "product-configs": {
+      "circuit-breaker": "a797b64af8583383f32d3b859367ded76b44f21e",
+      "gateway-server": "a797b64af8583383f32d3b859367ded76b44f21e",
+      "main": "5cd4d7f3851548a1c10a3db8f748b4cf7601da96",
+      "observability-and-monitoring": "3c426b499d8c315c08350cf7a653c1b83d0498f6",
+      "security": "3c426b499d8c315c08350cf7a653c1b83d0498f6",
+      "service-discovery-and-registration": "c2a87dcfd29d3f7d176cf3844b3f8afb6ae9a572"
+    }
+  },
+  "stages": [
+    {
+      "section": 5,
+      "branch": "course/section-05-profiles",
+      "sources": {
+        "accounts-service": "main",
+        "cards-service": "main",
+        "loans-service": "main"
+      },
+      "notes": [
+        "Profile baseline from the three original main branches; image tags already say s6.",
+        "Config server, discovery, gateway, and messaging are not introduced yet."
+      ],
+      "commits": {
+        "accounts-service": "3c20ba8562a3b2bd2b97c9ce454d79820f4ca2fa",
+        "cards-service": "8ba7ba22f6cc9ea0f121a299075503be07b75714",
+        "loans-service": "d4c84ebf8aa49a3d26f2cf5319f2cc3475cc238f"
+      }
+    },
+    {
+      "section": 6,
+      "branch": "course/section-06-spring-cloud-config",
+      "sources": {
+        "accounts-service": "spring-cloud-config",
+        "cards-service": "spring-cloud-config",
+        "loans-service": "spring-cloud-config",
+        "config-server": "spring-cloud-config",
+        "product-configs": "main"
+      },
+      "notes": [
+        "product-configs has no spring-cloud-config branch; main is the config-server target.",
+        "The config repository main already contains MySQL settings; this is the original saved state."
+      ],
+      "commits": {
+        "accounts-service": "2c53ec5c806c77e32506d3fdec316c25210dbca6",
+        "cards-service": "82be26011424569f8271c001bda11343720851fc",
+        "loans-service": "01756d89b4b3534ab064cbdb63e9700242cd2167",
+        "config-server": "e33b53906a91ee858ddbeb0c8b0e7c8ee319470e",
+        "product-configs": "5cd4d7f3851548a1c10a3db8f748b4cf7601da96"
+      }
+    },
+    {
+      "section": 7,
+      "branch": "course/section-07-mysql-database",
+      "sources": {
+        "accounts-service": "mysql-database",
+        "cards-service": "mysql-database",
+        "loans-service": "mysql-database",
+        "config-server": "mysql-database",
+        "product-configs": "main"
+      },
+      "notes": [
+        "product-configs/main contains MySQL configuration; no mysql-database branch exists there."
+      ],
+      "commits": {
+        "accounts-service": "c1a2dcc0c47374697aa1ac71533f081613c50415",
+        "cards-service": "bf0192a2253777332fe57ca21219c5f1c24bf00b",
+        "loans-service": "03d3a3f9bf8be4394addbf78c3797dff45705b0c",
+        "config-server": "5fbf7def95a504c723dbeb4defba6e0fd10632a1",
+        "product-configs": "5cd4d7f3851548a1c10a3db8f748b4cf7601da96"
+      }
+    },
+    {
+      "section": 8,
+      "branch": "course/section-08-service-discovery",
+      "sources": {
+        "accounts-service": "service-discovery-and-registration",
+        "cards-service": "service-discovery-and-registration",
+        "loans-service": "service-discovery-and-registration",
+        "config-server": "service-discovery-and-registration",
+        "eureka-server": "service-discovery-and-registration",
+        "product-configs": "service-discovery-and-registration"
+      },
+      "notes": [],
+      "commits": {
+        "accounts-service": "1aa800862b637e55c2925c22d08466de5575004f",
+        "cards-service": "98c528adfa8be24e172178794d642caf17391e47",
+        "loans-service": "ee61d9203031b6803fbbb249b95039e8d2b449ed",
+        "config-server": "12eca5d2f76f2216c60832f8bb33f92fb83c56e9",
+        "eureka-server": "19ad36522c7610a3728f1b54a8761795f75c309b",
+        "product-configs": "c2a87dcfd29d3f7d176cf3844b3f8afb6ae9a572"
+      }
+    },
+    {
+      "section": 9,
+      "branch": "course/section-09-gateway",
+      "sources": {
+        "accounts-service": "gateway-server",
+        "cards-service": "gateway-server",
+        "loans-service": "gateway-server",
+        "product-configs": "gateway-server",
+        "config-server": "dfe485c",
+        "eureka-server": "circuit-breaker",
+        "gateway-server": "main"
+      },
+      "notes": [
+        "Config Server dfe485c selects product-configs/gateway-server and precedes its circuit-breaker changes.",
+        "Eureka circuit-breaker only updates its image tag from s8 to s9; it is also the gateway-stage version.",
+        "gateway-server/main is the gateway checkpoint; its circuit-breaker branch adds resilience later."
+      ],
+      "commits": {
+        "accounts-service": "ab7d67da1ce848dfbdd7f4a204238b78d2a00b6c",
+        "cards-service": "39915ba294a9e98f7bc1a60cf152a2c33059d76b",
+        "loans-service": "f31418b4cdbc62a44c87f2ddbeb30e73afddcd2e",
+        "product-configs": "a797b64af8583383f32d3b859367ded76b44f21e",
+        "config-server": "dfe485c036cc960deb660b233362b421f3d4747e",
+        "eureka-server": "157515a22adf330cce6c600a2b00d354fc148fbe",
+        "gateway-server": "813b9b256bcf17520b61fb50e5d69ac95f0d89a7"
+      }
+    },
+    {
+      "section": 10,
+      "branch": "course/section-10-circuit-breaker",
+      "sources": {
+        "accounts-service": "circuit-breaker",
+        "cards-service": "circuit-breaker",
+        "loans-service": "circuit-breaker",
+        "config-server": "circuit-breaker",
+        "eureka-server": "circuit-breaker",
+        "gateway-server": "circuit-breaker",
+        "product-configs": "circuit-breaker"
+      },
+      "notes": [
+        "Circuit-breaker sources still use s9 image tags; code and course topic identify section 10.",
+        "cards-service circuit-breaker and gateway-server point to the same commit.",
+        "product-configs circuit-breaker and gateway-server point to the same commit."
+      ],
+      "commits": {
+        "accounts-service": "cea15bfe1463430a036b041b039aabf2f7353bc6",
+        "cards-service": "39915ba294a9e98f7bc1a60cf152a2c33059d76b",
+        "loans-service": "02002c7af90f2b4f7412b6754968dbc32f306b00",
+        "config-server": "3b261077bcd34e2fd60735ce616ca6de6f747688",
+        "eureka-server": "157515a22adf330cce6c600a2b00d354fc148fbe",
+        "gateway-server": "ca7425e27ce6d1a862568e3d9f7daddf2262f6f2",
+        "product-configs": "a797b64af8583383f32d3b859367ded76b44f21e"
+      }
+    },
+    {
+      "section": 11,
+      "branch": "course/section-11-observability-and-monitoring",
+      "sources": {
+        "accounts-service": "observability-and-monitoring",
+        "cards-service": "observability-and-monitoring",
+        "loans-service": "observability-and-monitoring",
+        "config-server": "observability-and-monitoring",
+        "eureka-server": "observability-and-monitoring",
+        "gateway-server": "observability-and-monitoring",
+        "product-configs": "observability-and-monitoring"
+      },
+      "notes": [
+        "The sources include a later H2 migration; preserved as saved.",
+        "Some Docker Compose references still use s9 despite s11 build image tags."
+      ],
+      "commits": {
+        "accounts-service": "59bca19bc60e3f60716f26cdc0ce8b8a4c49af8a",
+        "cards-service": "14b65a23e5c0140ef6575e4015ce30b9bc4fff1e",
+        "loans-service": "0470d841f7171e6a97899d0e01f1f8f6d3fb1672",
+        "config-server": "94b74fee2cbdc6e64c4fa033d95b88a35760429e",
+        "eureka-server": "5fab70d1131b2133ee8819f83fadf5b1516f4eb0",
+        "gateway-server": "d80cde965460cb22244a5e159e7edd914be9be86",
+        "product-configs": "3c426b499d8c315c08350cf7a653c1b83d0498f6"
+      }
+    },
+    {
+      "section": 12,
+      "branch": "course/section-12-security",
+      "sources": {
+        "accounts-service": "security",
+        "cards-service": "security",
+        "loans-service": "security",
+        "config-server": "security",
+        "eureka-server": "security",
+        "gateway-server": "security",
+        "product-configs": "security"
+      },
+      "notes": [
+        "product-configs/security and observability-and-monitoring point to the same commit.",
+        "Some Docker Compose references still use s9 despite s12 build image tags."
+      ],
+      "commits": {
+        "accounts-service": "963c673997b15f0701a5c9764b1f8ba4a074135b",
+        "cards-service": "ed881b12700074e4f786c5be83cc9ace96b4df92",
+        "loans-service": "47637e73ff3b1f949f262a6afeb310742ee480ff",
+        "config-server": "11d6dd099e9f6bf2fd8407e387f04032b9960851",
+        "eureka-server": "8b9351518fd14798aefa83c628f520f1fb279f3d",
+        "gateway-server": "cd70c4cec0c7184207903203790bcafb58f9632c",
+        "product-configs": "3c426b499d8c315c08350cf7a653c1b83d0498f6"
+      }
+    },
+    {
+      "section": 13,
+      "branch": "course/section-13-event-driven",
+      "sources": {
+        "accounts-service": "security",
+        "cards-service": "security",
+        "loans-service": "security",
+        "config-server": "security",
+        "eureka-server": "security",
+        "gateway-server": "security",
+        "product-configs": "security",
+        "message": "main"
+      },
+      "notes": [
+        "Work in progress: combines the section-12 services with message/main.",
+        "No section-13 branch exists in the other service repositories.",
+        "This does not invent accounts-to-message integration that has not been implemented."
+      ],
+      "commits": {
+        "accounts-service": "963c673997b15f0701a5c9764b1f8ba4a074135b",
+        "cards-service": "ed881b12700074e4f786c5be83cc9ace96b4df92",
+        "loans-service": "47637e73ff3b1f949f262a6afeb310742ee480ff",
+        "config-server": "11d6dd099e9f6bf2fd8407e387f04032b9960851",
+        "eureka-server": "8b9351518fd14798aefa83c628f520f1fb279f3d",
+        "gateway-server": "cd70c4cec0c7184207903203790bcafb58f9632c",
+        "product-configs": "3c426b499d8c315c08350cf7a653c1b83d0498f6",
+        "message": "9999c013ef4e4772f3ad6ea1d299b8b18adf85cb"
+      }
+    }
+  ]
+}

@@ -82,3 +82,8 @@ Their settings files are used only when opening/building them independently;
 opening this root folder uses the root settings instead.
 Dependency and plugin versions remain defined in each service's build file.
 The parent adds build, check, and clean tasks across all modules.
+
+## Course checkpoints
+
+See [the course branch guide](docs/course-branches.md) for matched section branches,
+source commit mappings, and the section-13 work in progress.
