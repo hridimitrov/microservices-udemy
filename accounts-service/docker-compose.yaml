@@ -1,7 +1,85 @@
 services:
+
+  config-server:
+    image: hridmitrov/config-server:s7
+    container_name: config-server
+    restart: always
+    ports:
+      - "8071:8071"
+    deploy:
+      resources:
+        limits:
+          memory: 1024m
+    networks:
+      - "banking-network"
+
+  accounts-db:
+    image: mysql
+    container_name: accounts-db
+    ports:
+      - "3306:3306"
+    deploy:
+      resources:
+        limits:
+          memory: 1024m
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 10s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: accountsdb
+    networks:
+      - "banking-network"
+
+  loans-db:
+    image: mysql
+    container_name: loans-db
+    ports:
+      - "3307:3306"
+    deploy:
+      resources:
+        limits:
+          memory: 1024m
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 10s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: loansdb
+    networks:
+      - "banking-network"
+
+  cards-db:
+    image: mysql
+    container_name: cards-db
+    ports:
+      - "3308:3306"
+    deploy:
+      resources:
+        limits:
+          memory: 1024m
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 10s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cardsdb
+    networks:
+      - "banking-network"
+
   accounts-service:
-    image: hridmitrov/accounts-service:s4
+    image: hridmitrov/accounts-service:s7
     container_name: accounts-ms
+    restart: always
     ports:
       - "8080:8080"
     deploy:
@@ -10,10 +88,22 @@ services:
           memory: 1024m
     networks:
       - "banking-network"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      CONFIG_SERVER_URL: http://config-server:8071
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_URL: "jdbc:mysql://accounts-db:3306/accountsdb"
+    depends_on:
+      config-server:
+        condition: service_started
+      accounts-db:
+        condition: service_healthy
 
   loans-service:
-    image: hridmitrov/loans-service:s4
+    image: hridmitrov/loans-service:s7
     container_name: loans-ms
+    restart: always
     ports:
       - "8090:8090"
     deploy:
@@ -22,10 +112,22 @@ services:
           memory: 1024m
     networks:
       - "banking-network"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      CONFIG_SERVER_URL: http://config-server:8071
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_URL: "jdbc:mysql://loans-db:3306/loansdb"
+    depends_on:
+      config-server:
+        condition: service_started
+      loans-db:
+        condition: service_healthy
 
   cards-service:
-    image: hridmitrov/cards-service:s4
+    image: hridmitrov/cards-service:s7
     container_name: cards-ms
+    restart: always
     ports:
       - "9000:9000"
     deploy:
@@ -34,6 +136,17 @@ services:
           memory: 1024m
     networks:
       - "banking-network"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      CONFIG_SERVER_URL: http://config-server:8071
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_URL: "jdbc:mysql://cards-db:3306/cardsdb"
+    depends_on:
+      config-server:
+        condition: service_started
+      cards-db:
+        condition: service_healthy
 
 networks:
   banking-network:
