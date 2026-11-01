@@ -22,7 +22,7 @@ repositories {
     mavenCentral()
 }
 
-jib.to.image = "hridmitrov/${project.description}:s11"
+jib.to.image = "hridmitrov/${project.description}:s12"
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

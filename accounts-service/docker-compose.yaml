@@ -97,24 +97,6 @@ services:
       eureka-server:
         condition: service_started
 
-  redis:
-    image: redis:7.4.2-alpine
-    container_name: redis
-    restart: always
-    ports:
-      - "6379:6379"
-    deploy:
-      resources:
-        limits:
-          memory: 512m
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - "banking-network"
-
   gateway-server:
     image: hridmitrov/gateway-server:s9
     container_name: gateway-server
@@ -130,8 +112,6 @@ services:
     environment:
       CONFIG_SERVER_URL: http://config-server:8071
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
     depends_on:
       config-server:
         condition: service_started

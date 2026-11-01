@@ -6,18 +6,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class DockerComposeConfigurationTests {
 
     @Test
-    void includesRedisOnTheBankingNetwork() throws IOException {
+    void excludesRedisFromTheBankingStack() throws IOException {
         String compose = Files.readString(Path.of("docker-compose.yaml"));
 
-        assertTrue(compose.contains("  redis:"));
-        assertTrue(compose.contains("image: redis:"));
-        assertTrue(compose.contains("\"6379:6379\""));
-        assertTrue(compose.contains("container_name: redis"));
-        assertTrue(compose.contains("- \"banking-network\""));
+        assertFalse(compose.contains("  redis:"));
+        assertFalse(compose.contains("image: redis:"));
+        assertFalse(compose.contains("6379:6379"));
+        assertFalse(compose.contains("container_name: redis"));
+        assertFalse(compose.contains("SPRING_DATA_REDIS"));
     }
 }
