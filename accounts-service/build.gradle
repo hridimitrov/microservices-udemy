@@ -22,7 +22,7 @@ repositories {
     mavenCentral()
 }
 
-jib.to.image = "hridmitrov/${project.description}:s8"
+jib.to.image = "hridmitrov/${project.description}:s9"
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
