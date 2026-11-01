@@ -85,5 +85,20 @@ The parent adds build, check, and clean tasks across all modules.
 
 ## Course checkpoints
 
+### Rebuild the Docker stack
+
+On the section-13 branch, the six stack services use `s12` image tags and H2.
+Build their images into your local Docker daemon from the current source:
+
+```powershell
+.\gradlew.bat :config-server:jibDockerBuild :eureka-server:jibDockerBuild :accounts-service:jibDockerBuild :cards-service:jibDockerBuild :loans-service:jibDockerBuild :gateway-server:jibDockerBuild
+docker compose -f accounts-service/docker-compose.yaml up -d --pull never
+```
+
+The config-server image includes the native H2 configuration. Rebuild that
+image too when changing its bundled configuration files. The `message` module
+is not part of this Compose stack yet. H2 data is held in memory and is lost
+when its service restarts.
+
 See [the course branch guide](docs/course-branches.md) for matched section branches,
 source commit mappings, and the section-13 work in progress.

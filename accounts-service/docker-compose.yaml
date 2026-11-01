@@ -1,7 +1,7 @@
 services:
 
   config-server:
-    image: hridmitrov/config-server:s9
+    image: hridmitrov/config-server:s12
     container_name: config-server
     restart: always
     ports:
@@ -14,7 +14,7 @@ services:
       - "banking-network"
 
   eureka-server:
-    image: hridmitrov/eureka-server:s9
+    image: hridmitrov/eureka-server:s12
     container_name: eureka-server
     restart: always
     ports:
@@ -32,7 +32,7 @@ services:
       - "banking-network"
 
   accounts-service:
-    image: hridmitrov/accounts-service:s9
+    image: hridmitrov/accounts-service:s12
     container_name: accounts-ms
     restart: always
     ports:
@@ -54,7 +54,7 @@ services:
         condition: service_started
 
   loans-service:
-    image: hridmitrov/loans-service:s9
+    image: hridmitrov/loans-service:s12
     container_name: loans-ms
     restart: always
     ports:
@@ -76,7 +76,7 @@ services:
         condition: service_started
 
   cards-service:
-    image: hridmitrov/cards-service:s9
+    image: hridmitrov/cards-service:s12
     container_name: cards-ms
     restart: always
     ports:
@@ -98,7 +98,7 @@ services:
         condition: service_started
 
   gateway-server:
-    image: hridmitrov/gateway-server:s9
+    image: hridmitrov/gateway-server:s12
     container_name: gateway-server
     restart: always
     ports:
