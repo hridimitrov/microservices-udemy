@@ -23,17 +23,17 @@ ext {
     set('springCloudVersion', "2025.1.4")
 }
 
-jib.to.image = "hridmitrov/${project.description}:s13"
+jib.to.image = "hridmitrov/${project.description}:s14"
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-amqp'
-    implementation 'org.springframework.amqp:spring-rabbit-stream'
     implementation 'org.springframework.cloud:spring-cloud-stream'
-    implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
 
     implementation 'org.springframework.cloud:spring-cloud-function-context'
+    implementation 'org.springframework.boot:spring-boot-starter-kafka'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

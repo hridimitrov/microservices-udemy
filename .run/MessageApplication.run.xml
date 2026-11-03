@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MessageApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="microservices-udemy.message.main" />
+    <shortenClasspath name="ARGS_FILE" />
+    <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.dimihris.message.MessageApplication" />
+    <method v="2">
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks=":message:classes" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>

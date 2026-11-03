@@ -22,13 +22,11 @@ repositories {
     mavenCentral()
 }
 
-jib.to.image = "hridmitrov/${project.description}:s13"
+jib.to.image = "hridmitrov/${project.description}:s14"
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-amqp'
-    implementation 'org.springframework.amqp:spring-rabbit-stream'
+
     implementation 'org.springframework.cloud:spring-cloud-stream'
-    implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -38,6 +36,9 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+    implementation 'org.springframework.boot:spring-boot-starter-kafka'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'

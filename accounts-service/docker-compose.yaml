@@ -1,22 +1,31 @@
 services:
 
-  rabbitmq:
-    image: rabbitmq:4-management
-    restart: always
+  kafka:
+    image: apache/kafka:4.4.0
+    hostname: kafka
+    container_name: kafka
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "9092:9092"
     environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-guest}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-guest}
-    volumes:
-      - rabbitmq-data:/var/lib/rabbitmq
-    hostname: rabbitmq
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:29093
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,CONTROLLER://0.0.0.0:29093,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      test: ["CMD", "/opt/kafka/bin/kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:29092"]
       interval: 10s
-      timeout: 5s
-      retries: 12
+      timeout: 10s
+      retries: 10
       start_period: 20s
     networks:
       - "banking-network"
@@ -38,7 +47,7 @@ services:
       - "banking-network"
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.0.7
+    image: quay.io/keycloak/keycloak:26.8.1
     container_name: keycloak
     command: start-dev
     restart: always
@@ -53,7 +62,7 @@ services:
       - "banking-network"
 
   config-server:
-    image: hridmitrov/config-server:s13
+    image: hridmitrov/config-server:s14
     container_name: config-server
     restart: always
     ports:
@@ -66,7 +75,7 @@ services:
       - "banking-network"
 
   eureka-server:
-    image: hridmitrov/eureka-server:s13
+    image: hridmitrov/eureka-server:s14
     container_name: eureka-server
     restart: always
     ports:
@@ -84,7 +93,7 @@ services:
       - "banking-network"
 
   accounts-service:
-    image: hridmitrov/accounts-service:s13
+    image: hridmitrov/accounts-service:s14
     container_name: accounts-ms
     restart: always
     ports:
@@ -99,11 +108,10 @@ services:
       SPRING_PROFILES_ACTIVE: prod
       CONFIG_SERVER_URL: http://config-server:8071
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
-      SPRING_RABBITMQ_HOST: rabbitmq
-      SPRING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-guest}
-      SPRING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-guest}
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka:29092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
     depends_on:
-      rabbitmq:
+      kafka:
         condition: service_healthy
       config-server:
         condition: service_started
@@ -111,7 +119,7 @@ services:
         condition: service_started
 
   loans-service:
-    image: hridmitrov/loans-service:s13
+    image: hridmitrov/loans-service:s14
     container_name: loans-ms
     restart: always
     ports:
@@ -133,7 +141,7 @@ services:
         condition: service_started
 
   cards-service:
-    image: hridmitrov/cards-service:s13
+    image: hridmitrov/cards-service:s14
     container_name: cards-ms
     restart: always
     ports:
@@ -155,7 +163,7 @@ services:
         condition: service_started
 
   gateway-server:
-    image: hridmitrov/gateway-server:s13
+    image: hridmitrov/gateway-server:s14
     container_name: gateway-server
     restart: always
     ports:
@@ -179,15 +187,14 @@ services:
         condition: service_started
 
   message:
-    image: hridmitrov/message:s13
+    image: hridmitrov/message:s14
     container_name: message-ms
     restart: always
     environment:
-      SPRING_RABBITMQ_HOST: rabbitmq
-      SPRING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-guest}
-      SPRING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-guest}
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka:29092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
     depends_on:
-      rabbitmq:
+      kafka:
         condition: service_healthy
     networks:
       - "banking-network"
@@ -196,7 +203,6 @@ volumes:
   keycloak-data:
     external: true
     name: accounts-service_keycloak-data
-  rabbitmq-data:
   redis-data:
 
 networks:

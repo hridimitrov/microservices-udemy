@@ -1,7 +1,6 @@
 package com.dimihris.accountsservice.functions;
 
 import com.dimihris.accountsservice.service.AccountsService;
-import com.rabbitmq.client.AMQP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;

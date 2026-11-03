@@ -59,9 +59,9 @@ You can also run each application's main class directly from IntelliJ.
 Use module-qualified `bootRun` tasks to choose which application to start.
 
 Eureka and the gateway currently import configuration from the config server,
-so start the config server before those applications. On the section-13 branch,
+so start the config server before those applications. On the current branch,
 the config server serves its bundled native H2 configuration. Accounts and
-message use RabbitMQ at `localhost:5672` when run directly from the IDE.
+message use Kafka at `localhost:9092` when run directly from the IDE.
 Existing application configuration and external infrastructure
 requirements still apply; the parent build does not start these dependencies.
 In particular, the existing Eureka and gateway context tests require a running
@@ -88,14 +88,14 @@ The parent adds build, check, and clean tasks across all modules.
 
 ### Rebuild the Docker stack
 
-On the section-13 branch, all seven services use `s13` image tags. Accounts,
-cards, and loans use H2. Compose includes RabbitMQ, Keycloak, and Redis.
-Accounts and message connect to RabbitMQ using its Compose service name.
-RabbitMQ exposes ports 5672 and 15672 (management UI); Redis exposes port 6379
+All seven services use `s14` image tags. Accounts,
+cards, and loans use H2. Compose includes Kafka, Keycloak, and Redis.
+Accounts and message connect to Kafka at `kafka:29092` inside Docker.
+Kafka exposes port 9092 for IDE clients; Redis exposes port 6379
 and persists data with append-only storage. Keep standalone containers using
 these ports stopped before starting the Compose stack.
-RabbitMQ credentials default to `guest`/`guest`; set `RABBITMQ_USERNAME` and
-`RABBITMQ_PASSWORD` before the first start to override them.
+Kafka runs as a single-node KRaft broker with plaintext listeners for local development.
+Kafka data currently lives inside the container and is lost when it is recreated.
 Redis is available at `redis:6379` within the network; the gateway currently
 has no Redis client or rate limiter configured.
 
@@ -108,7 +108,7 @@ it builds images locally without starting containers or pushing to a registry.
 
 ```powershell
 .\gradlew.bat :config-server:jibDockerBuild :eureka-server:jibDockerBuild :accounts-service:jibDockerBuild :cards-service:jibDockerBuild :loans-service:jibDockerBuild :gateway-server:jibDockerBuild :message:jibDockerBuild
-docker compose -f accounts-service/docker-compose.yaml pull keycloak
+docker compose -f accounts-service/docker-compose.yaml pull kafka keycloak redis
 docker compose -f accounts-service/docker-compose.yaml up -d --pull never
 ```
 
@@ -118,8 +118,8 @@ memory and is lost when its service restarts.
 
 Account creation publishes JSON to `send-communication`; message consumes it
 through the `email|sms` function composition with consumer group `message`.
-The producer provisions that group's queue so messages can wait while the
-consumer is down. The functions currently log simulated email/SMS delivery.
+Kafka stores notifications in topics, and consumer groups track their offsets.
+The functions currently log simulated email/SMS delivery.
 Check delivery with `docker logs message-ms` after creating an account.
 
 Compose also starts the upstream Keycloak service at `http://localhost:7080`.
