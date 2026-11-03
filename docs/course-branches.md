@@ -25,14 +25,14 @@ A dash means that the module had not been introduced yet and is omitted from tha
 
 | Module | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| accounts-service | `main` | `spring-cloud-config` | `mysql-database` | `service-discovery-and-registration` | `gateway-server` | `circuit-breaker` | `observability-and-monitoring` | `security` | `security` |
-| cards-service | `main` | `spring-cloud-config` | `mysql-database` | `service-discovery-and-registration` | `gateway-server` | `circuit-breaker` | `observability-and-monitoring` | `security` | `security` |
-| loans-service | `main` | `spring-cloud-config` | `mysql-database` | `service-discovery-and-registration` | `gateway-server` | `circuit-breaker` | `observability-and-monitoring` | `security` | `security` |
-| config-server | — | `spring-cloud-config` | `mysql-database` | `service-discovery-and-registration` | `dfe485c` | `circuit-breaker` | `observability-and-monitoring` | `security` | `security` |
-| eureka-server | — | — | — | `service-discovery-and-registration` | `circuit-breaker` | `circuit-breaker` | `observability-and-monitoring` | `security` | `security` |
-| gateway-server | — | — | — | — | `main` | `circuit-breaker` | `observability-and-monitoring` | `security` | `security` |
-| message | — | — | — | — | — | — | — | — | `main` |
-| product-configs | — | `main` | `main` | `service-discovery-and-registration` | `gateway-server` | `circuit-breaker` | `observability-and-monitoring` | `security` | `security` |
+| accounts-service | `main` | `spring-cloud-config` | `mysql-database` | `service-discovery-and-registration` | `gateway-server` | `circuit-breaker` | `observability-and-monitoring` | `security` | `event-drivven-using-rabbitmq` |
+| cards-service | `main` | `spring-cloud-config` | `mysql-database` | `service-discovery-and-registration` | `gateway-server` | `circuit-breaker` | `observability-and-monitoring` | `security` | `event-drivven-using-rabbitmq` |
+| loans-service | `main` | `spring-cloud-config` | `mysql-database` | `service-discovery-and-registration` | `gateway-server` | `circuit-breaker` | `observability-and-monitoring` | `security` | `event-drivven-using-rabbitmq` |
+| config-server | — | `spring-cloud-config` | `mysql-database` | `service-discovery-and-registration` | `dfe485c` | `circuit-breaker` | `observability-and-monitoring` | `security` | `event-drivven-using-rabbitmq` |
+| eureka-server | — | — | — | `service-discovery-and-registration` | `circuit-breaker` | `circuit-breaker` | `observability-and-monitoring` | `security` | `event-drivven-using-rabbitmq` |
+| gateway-server | — | — | — | — | `main` | `circuit-breaker` | `observability-and-monitoring` | `security` | `event-drivven-using-rabbitmq` |
+| message | — | — | — | — | — | — | — | — | `event-drivven-using-rabbitmq` |
+| product-configs | — | `main` | `main` | `service-discovery-and-registration` | `gateway-server` | `circuit-breaker` | `observability-and-monitoring` | `security` | `event-drivven-using-rabbitmq` |
 
 ## Matching decisions and limits
 
@@ -51,9 +51,11 @@ A dash means that the module had not been introduced yet and is omitted from tha
 - Section 11: Some Docker Compose references still use s9 despite s11 build image tags.
 - Section 12: product-configs/security and observability-and-monitoring point to the same commit.
 - Section 12: Some Docker Compose references still use s9 despite s12 build image tags.
-- Section 13: Work in progress: combines the section-12 services with message/main.
-- Section 13: No section-13 branch exists in the other service repositories.
-- Section 13: This does not invent accounts-to-message integration that has not been implemented.
+
+- Section 13: Updated from the event-drivven-using-rabbitmq branch in all eight original repositories.
+- Section 13: Local integration fixes retain H2, align Compose to s13, add message to Compose, and reuse the standalone RabbitMQ broker.
+- Section 13: Gateway realm-role conversion safely ignores absent or malformed role claims.
+- Section 13: Source commits are the upstream baseline; local integration fixes are additional changes.
 
 ## Working with a section
 
@@ -90,3 +92,7 @@ The source branch names and commit IDs remain recorded in the manifest.
 
 Branches are created locally. Nothing is pushed automatically.
 To publish the combined branches when ready: `git push -u origin "refs/heads/course/*:refs/heads/course/*"`.
+
+Section 13 now publishes account notifications through RabbitMQ to the message service.
+See the root README for Docker build commands and the external RabbitMQ prerequisite.
+The section-13 Compose file uses s13 images; older section snapshots keep their original image tags.

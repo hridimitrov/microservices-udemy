@@ -59,9 +59,10 @@ You can also run each application's main class directly from IntelliJ.
 Use module-qualified `bootRun` tasks to choose which application to start.
 
 Eureka and the gateway currently import configuration from the config server,
-so start the config server before those applications. The config server uses
-RabbitMQ at `localhost:5672` and reads configuration from its configured GitHub
-repository. Existing application configuration and external infrastructure
+so start the config server before those applications. On the section-13 branch,
+the config server serves its bundled native H2 configuration. Accounts and
+message use RabbitMQ at `localhost:5672` when run directly from the IDE.
+Existing application configuration and external infrastructure
 requirements still apply; the parent build does not start these dependencies.
 In particular, the existing Eureka and gateway context tests require a running
 config server at `localhost:8071` (or the `CONFIG_SERVER_URL` you specify).
@@ -87,18 +88,50 @@ The parent adds build, check, and clean tasks across all modules.
 
 ### Rebuild the Docker stack
 
-On the section-13 branch, the six stack services use `s12` image tags and H2.
+On the section-13 branch, all seven services use `s13` image tags. Accounts,
+cards, and loans use H2. Compose includes RabbitMQ, Keycloak, and Redis.
+Accounts and message connect to RabbitMQ using its Compose service name.
+RabbitMQ exposes ports 5672 and 15672 (management UI); Redis exposes port 6379
+and persists data with append-only storage. Keep standalone containers using
+these ports stopped before starting the Compose stack.
+RabbitMQ credentials default to `guest`/`guest`; set `RABBITMQ_USERNAME` and
+`RABBITMQ_PASSWORD` before the first start to override them.
+Redis is available at `redis:6379` within the network; the gateway currently
+has no Redis client or rate limiter configured.
+
 Build their images into your local Docker daemon from the current source:
 
+On Windows, run `.\build-docker-images.cmd` to build all seven service images
+using their configured Jib tags. Start Docker Desktop first and ensure JDK 25
+is available (see Setup above). The script can be launched from any directory;
+it builds images locally without starting containers or pushing to a registry.
+
 ```powershell
-.\gradlew.bat :config-server:jibDockerBuild :eureka-server:jibDockerBuild :accounts-service:jibDockerBuild :cards-service:jibDockerBuild :loans-service:jibDockerBuild :gateway-server:jibDockerBuild
+.\gradlew.bat :config-server:jibDockerBuild :eureka-server:jibDockerBuild :accounts-service:jibDockerBuild :cards-service:jibDockerBuild :loans-service:jibDockerBuild :gateway-server:jibDockerBuild :message:jibDockerBuild
+docker compose -f accounts-service/docker-compose.yaml pull keycloak
 docker compose -f accounts-service/docker-compose.yaml up -d --pull never
 ```
 
 The config-server image includes the native H2 configuration. Rebuild that
-image too when changing its bundled configuration files. The `message` module
-is not part of this Compose stack yet. H2 data is held in memory and is lost
-when its service restarts.
+image too when changing its bundled configuration files. H2 data is held in
+memory and is lost when its service restarts.
+
+Account creation publishes JSON to `send-communication`; message consumes it
+through the `email|sms` function composition with consumer group `message`.
+The producer provisions that group's queue so messages can wait while the
+consumer is down. The functions currently log simulated email/SMS delivery.
+Check delivery with `docker logs message-ms` after creating an account.
+
+Compose also starts the upstream Keycloak service at `http://localhost:7080`.
+Its local admin defaults to `admin`/`admin`; override `KEYCLOAK_ADMIN_USERNAME`
+and `KEYCLOAK_ADMIN_PASSWORD` before the first start to change these.
+Compose explicitly reuses the existing external volume
+`accounts-service_keycloak-data` mounted at `/opt/keycloak/data`, preserving
+existing realms, users, and clients. This volume must already exist and is
+retained even by `docker compose down -v`. Bootstrap credentials do not change
+the existing administrator's password.
+Gateway writes require the matching `ACCOUNTS`, `CARDS`, or `LOANS` realm role.
+The Docker gateway connects to Keycloak using its Compose service name.
 
 See [the course branch guide](docs/course-branches.md) for matched section branches,
 source commit mappings, and the section-13 work in progress.

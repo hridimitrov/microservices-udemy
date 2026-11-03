@@ -1,6 +1,7 @@
 package com.dimihris.accountsservice.service.impl;
 
 import com.dimihris.accountsservice.constatns.AccountsConstants;
+import com.dimihris.accountsservice.dto.AccountsMsgDto;
 import com.dimihris.accountsservice.dto.CustomerAccountsDto;
 import com.dimihris.accountsservice.dto.CustomerDto;
 import com.dimihris.accountsservice.entity.Accounts;
@@ -13,6 +14,10 @@ import com.dimihris.accountsservice.service.AccountsService;
 import com.dimihris.accountsservice.util.mapper.CustomerAccountsMapper;
 import com.dimihris.accountsservice.util.mapper.CustomerMapper;
 import lombok.AllArgsConstructor;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -20,10 +25,25 @@ import java.util.Random;
 @AllArgsConstructor
 @Service
 public class AccountsServiceImpl implements AccountsService {
+    @Override
+    public boolean updateCommunicationStatus(Long accountNumber) {
+        boolean isUpdated = false;
+
+        if (accountNumber != null) {
+            Accounts accounts = accountsRepository.findById(accountNumber).orElseThrow(
+                    () -> new ResourceNotFoundException("Account", "AccountNumber", accountNumber.toString())
+            );
+            accounts.setCommunicationSwitch(true);
+            accountsRepository.save(accounts);
+            isUpdated = true;
+        }
+        return isUpdated;
+    }
 
     private CustomerRepository customerRepository;
     private AccountsRepository accountsRepository;
-
+    private StreamBridge streamBridge;
+    private static final Logger logger = LoggerFactory.getLogger(AccountsServiceImpl.class);
     private static final Random RANDOM = new Random();
 
     @Override
@@ -40,6 +60,7 @@ public class AccountsServiceImpl implements AccountsService {
 
         Accounts newAccount = createNewAccount(savedCustomer);
         accountsRepository.save(newAccount);
+        sendCommunication(newAccount, savedCustomer);
     }
 
     @Override
@@ -101,5 +122,16 @@ public class AccountsServiceImpl implements AccountsService {
 
     private long generateAccountNumber() {
         return 1_000_000_000L + RANDOM.nextInt(900_000_000);
+    }
+
+    private void sendCommunication(Accounts accounts, Customer customer) {
+
+        AccountsMsgDto accountsMsgDto = new AccountsMsgDto(accounts.getAccountNumber(), customer.getName(),
+        customer.getEmail(), customer.getMobileNumber());
+
+        logger.info("Sending communication request for the details: {}", accountsMsgDto);
+        var result = streamBridge.send("sendCommunication-out-0", accountsMsgDto);
+        logger.info("Communication request sent: {}", result);
+
     }
 }

@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
     `account_number` INT AUTO_INCREMENT PRIMARY KEY,
     `account_type` VARCHAR(100) NOT NULL,
     `branch_address` VARCHAR(200) NOT NULL,
+    `communication_sw` BOOLEAN,
     `created_at` DATE NOT NULL,
     `created_by` VARCHAR(20) NOT NULL,
     `updated_at` DATE DEFAULT NULL,

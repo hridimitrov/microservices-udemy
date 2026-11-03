@@ -9,7 +9,8 @@
       "observability-and-monitoring": "59bca19bc60e3f60716f26cdc0ce8b8a4c49af8a",
       "security": "963c673997b15f0701a5c9764b1f8ba4a074135b",
       "service-discovery-and-registration": "1aa800862b637e55c2925c22d08466de5575004f",
-      "spring-cloud-config": "2c53ec5c806c77e32506d3fdec316c25210dbca6"
+      "spring-cloud-config": "2c53ec5c806c77e32506d3fdec316c25210dbca6",
+      "event-drivven-using-rabbitmq": "377ef93261c05003dd03cd00b281416ba11c0276"
     },
     "cards-service": {
       "circuit-breaker": "39915ba294a9e98f7bc1a60cf152a2c33059d76b",
@@ -19,7 +20,8 @@
       "observability-and-monitoring": "14b65a23e5c0140ef6575e4015ce30b9bc4fff1e",
       "security": "ed881b12700074e4f786c5be83cc9ace96b4df92",
       "service-discovery-and-registration": "98c528adfa8be24e172178794d642caf17391e47",
-      "spring-cloud-config": "82be26011424569f8271c001bda11343720851fc"
+      "spring-cloud-config": "82be26011424569f8271c001bda11343720851fc",
+      "event-drivven-using-rabbitmq": "a57e82ae79796c53a838b12c4e9272e54b835a10"
     },
     "loans-service": {
       "circuit-breaker": "02002c7af90f2b4f7412b6754968dbc32f306b00",
@@ -29,7 +31,8 @@
       "observability-and-monitoring": "0470d841f7171e6a97899d0e01f1f8f6d3fb1672",
       "security": "47637e73ff3b1f949f262a6afeb310742ee480ff",
       "service-discovery-and-registration": "ee61d9203031b6803fbbb249b95039e8d2b449ed",
-      "spring-cloud-config": "01756d89b4b3534ab064cbdb63e9700242cd2167"
+      "spring-cloud-config": "01756d89b4b3534ab064cbdb63e9700242cd2167",
+      "event-drivven-using-rabbitmq": "e15b58a2d6ec525883bd149aa665c5271a9c3c1c"
     },
     "config-server": {
       "circuit-breaker": "3b261077bcd34e2fd60735ce616ca6de6f747688",
@@ -38,23 +41,27 @@
       "observability-and-monitoring": "94b74fee2cbdc6e64c4fa033d95b88a35760429e",
       "security": "11d6dd099e9f6bf2fd8407e387f04032b9960851",
       "service-discovery-and-registration": "12eca5d2f76f2216c60832f8bb33f92fb83c56e9",
-      "spring-cloud-config": "e33b53906a91ee858ddbeb0c8b0e7c8ee319470e"
+      "spring-cloud-config": "e33b53906a91ee858ddbeb0c8b0e7c8ee319470e",
+      "event-drivven-using-rabbitmq": "844182be78c395834958a1bfa9137370a473f0fc"
     },
     "eureka-server": {
       "circuit-breaker": "157515a22adf330cce6c600a2b00d354fc148fbe",
       "main": "126ab412f3ad4094fa7da10c9bd5df801460a1b1",
       "observability-and-monitoring": "5fab70d1131b2133ee8819f83fadf5b1516f4eb0",
       "security": "8b9351518fd14798aefa83c628f520f1fb279f3d",
-      "service-discovery-and-registration": "19ad36522c7610a3728f1b54a8761795f75c309b"
+      "service-discovery-and-registration": "19ad36522c7610a3728f1b54a8761795f75c309b",
+      "event-drivven-using-rabbitmq": "4294500f6d8e7b9da8aef2fde6ccb5a8629becc5"
     },
     "gateway-server": {
       "circuit-breaker": "ca7425e27ce6d1a862568e3d9f7daddf2262f6f2",
       "main": "813b9b256bcf17520b61fb50e5d69ac95f0d89a7",
       "observability-and-monitoring": "d80cde965460cb22244a5e159e7edd914be9be86",
-      "security": "cd70c4cec0c7184207903203790bcafb58f9632c"
+      "security": "cd70c4cec0c7184207903203790bcafb58f9632c",
+      "event-drivven-using-rabbitmq": "f8c4718674df5288f7362d3f057ad9d1344d6824"
     },
     "message": {
-      "main": "9999c013ef4e4772f3ad6ea1d299b8b18adf85cb"
+      "main": "9999c013ef4e4772f3ad6ea1d299b8b18adf85cb",
+      "event-drivven-using-rabbitmq": "59a544287a5c71f6fb3846c2b326b09c736db8d9"
     },
     "product-configs": {
       "circuit-breaker": "a797b64af8583383f32d3b859367ded76b44f21e",
@@ -62,7 +69,8 @@
       "main": "5cd4d7f3851548a1c10a3db8f748b4cf7601da96",
       "observability-and-monitoring": "3c426b499d8c315c08350cf7a653c1b83d0498f6",
       "security": "3c426b499d8c315c08350cf7a653c1b83d0498f6",
-      "service-discovery-and-registration": "c2a87dcfd29d3f7d176cf3844b3f8afb6ae9a572"
+      "service-discovery-and-registration": "c2a87dcfd29d3f7d176cf3844b3f8afb6ae9a572",
+      "event-drivven-using-rabbitmq": "3c426b499d8c315c08350cf7a653c1b83d0498f6"
     }
   },
   "stages": [
@@ -258,29 +266,30 @@
       "section": 13,
       "branch": "course/section-13-event-driven",
       "sources": {
-        "accounts-service": "security",
-        "cards-service": "security",
-        "loans-service": "security",
-        "config-server": "security",
-        "eureka-server": "security",
-        "gateway-server": "security",
-        "product-configs": "security",
-        "message": "main"
+        "accounts-service": "event-drivven-using-rabbitmq",
+        "cards-service": "event-drivven-using-rabbitmq",
+        "loans-service": "event-drivven-using-rabbitmq",
+        "config-server": "event-drivven-using-rabbitmq",
+        "eureka-server": "event-drivven-using-rabbitmq",
+        "gateway-server": "event-drivven-using-rabbitmq",
+        "product-configs": "event-drivven-using-rabbitmq",
+        "message": "event-drivven-using-rabbitmq"
       },
       "notes": [
-        "Work in progress: combines the section-12 services with message/main.",
-        "No section-13 branch exists in the other service repositories.",
-        "This does not invent accounts-to-message integration that has not been implemented."
+        "Updated from the event-drivven-using-rabbitmq branch in all eight original repositories.",
+        "Local integration fixes retain H2, align Compose to s13, add message to Compose, and reuse the standalone RabbitMQ broker.",
+        "Gateway realm-role conversion safely ignores absent or malformed role claims.",
+        "Source commits are the upstream baseline; local integration fixes are additional changes."
       ],
       "commits": {
-        "accounts-service": "963c673997b15f0701a5c9764b1f8ba4a074135b",
-        "cards-service": "ed881b12700074e4f786c5be83cc9ace96b4df92",
-        "loans-service": "47637e73ff3b1f949f262a6afeb310742ee480ff",
-        "config-server": "11d6dd099e9f6bf2fd8407e387f04032b9960851",
-        "eureka-server": "8b9351518fd14798aefa83c628f520f1fb279f3d",
-        "gateway-server": "cd70c4cec0c7184207903203790bcafb58f9632c",
+        "accounts-service": "377ef93261c05003dd03cd00b281416ba11c0276",
+        "cards-service": "a57e82ae79796c53a838b12c4e9272e54b835a10",
+        "loans-service": "e15b58a2d6ec525883bd149aa665c5271a9c3c1c",
+        "config-server": "844182be78c395834958a1bfa9137370a473f0fc",
+        "eureka-server": "4294500f6d8e7b9da8aef2fde6ccb5a8629becc5",
+        "gateway-server": "f8c4718674df5288f7362d3f057ad9d1344d6824",
         "product-configs": "3c426b499d8c315c08350cf7a653c1b83d0498f6",
-        "message": "9999c013ef4e4772f3ad6ea1d299b8b18adf85cb"
+        "message": "59a544287a5c71f6fb3846c2b326b09c736db8d9"
       }
     }
   ]

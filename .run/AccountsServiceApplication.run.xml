@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AccountsServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="microservices-udemy.accounts-service.main" />
+    <shortenClasspath name="ARGS_FILE" />
+    <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.dimihris.accountsservice.AccountsServiceApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
